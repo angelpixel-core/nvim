@@ -1,0 +1,103 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    devDependencies:
+      dockerfile-language-server-nodejs:
+        specifier: ^0.13.0
+        version: 0.13.0
+
+packages:
+
+  dockerfile-ast@0.6.1:
+    resolution: {integrity: sha512-m3rH2qHHU2pSTCppXgJT+1KLxhvkdROOxVPof5Yz4IPGSw6K+x0B0/RFdYgXN5zsIUTlbOSRyfDCv3/uVhnNmg==}
+
+  dockerfile-language-server-nodejs@0.13.0:
+    resolution: {integrity: sha512-r8GwQGVBHuRj83nFYoA7ulGfp6tgUH8gxlPRap0ewuroEb/XgP4KtLsIUIN9CvkTZge/IkX7cbFTVO0lq9gZ3A==}
+    hasBin: true
+
+  dockerfile-language-service@0.14.0:
+    resolution: {integrity: sha512-G3FDjCpuWQNrTuarSFtlOUNwwJl9ECJqsQdqGQN79nCmA1av0bbNSD++ipvfBqb/1fFeP2XxFy/N7WRIF12aBg==}
+
+  dockerfile-utils@0.16.1:
+    resolution: {integrity: sha512-kYj772IlJi8aVYB8fS/1ByJH3skQ/Nroa8NkSHrnHE51savvIXKV/9vpRrjnokL/qGWtSDeIWOVHev2S7zZpcA==}
+    hasBin: true
+
+  vscode-jsonrpc@8.0.2:
+    resolution: {integrity: sha512-RY7HwI/ydoC1Wwg4gJ3y6LpU9FJRZAUnTYMXthqhFXXu77ErDd/xkREpGuk4MyYkk4a+XDWAMqe0S3KkelYQEQ==}
+    engines: {node: '>=14.0.0'}
+
+  vscode-languageserver-protocol@3.17.2:
+    resolution: {integrity: sha512-8kYisQ3z/SQ2kyjlNeQxbkkTNmVFoQCqkmGrzLH6A9ecPlgTbp3wDTnUNqaUxYr4vlAcloxx8zwy7G5WdguYNg==}
+
+  vscode-languageserver-textdocument@1.0.12:
+    resolution: {integrity: sha512-cxWNPesCnQCcMPeenjKKsOCKQZ/L6Tv19DTRIGuLWe32lyzWhihGVJ/rcckZXJxfdKCFvRLS3fpBIsV/ZGX4zA==}
+
+  vscode-languageserver-textdocument@1.0.8:
+    resolution: {integrity: sha512-1bonkGqQs5/fxGT5UchTgjGVnfysL0O8v1AYMBjqTbWQTFn721zaPGDYFkOKtfDgFiSgXM3KwaG3FMGfW4Ed9Q==}
+
+  vscode-languageserver-types@3.17.2:
+    resolution: {integrity: sha512-zHhCWatviizPIq9B7Vh9uvrH6x3sK8itC84HkamnBWoDFJtzBf7SWlpLCZUit72b3os45h6RWQNC9xHRDF8dRA==}
+
+  vscode-languageserver-types@3.17.3:
+    resolution: {integrity: sha512-SYU4z1dL0PyIMd4Vj8YOqFvHu7Hz/enbWtpfnVbJHU4Nd1YNYx8u0ennumc6h48GQNeOLxmwySmnADouT/AuZA==}
+
+  vscode-languageserver-types@3.17.5:
+    resolution: {integrity: sha512-Ld1VelNuX9pdF39h2Hgaeb5hEZM2Z3jUrrMgWQAu82jMtZp7p3vJT3BzToKtZI7NgQssZje5o0zryOrhQvzQAg==}
+
+  vscode-languageserver@8.0.2:
+    resolution: {integrity: sha512-bpEt2ggPxKzsAOZlXmCJ50bV7VrxwCS5BI4+egUmure/oI/t4OlFzi/YNtVvY24A2UDOZAgwFGgnZPwqSJubkA==}
+    hasBin: true
+
+snapshots:
+
+  dockerfile-ast@0.6.1:
+    dependencies:
+      vscode-languageserver-textdocument: 1.0.12
+      vscode-languageserver-types: 3.17.5
+
+  dockerfile-language-server-nodejs@0.13.0:
+    dependencies:
+      dockerfile-language-service: 0.14.0
+      dockerfile-utils: 0.16.1
+      vscode-languageserver: 8.0.2
+      vscode-languageserver-textdocument: 1.0.12
+
+  dockerfile-language-service@0.14.0:
+    dependencies:
+      dockerfile-ast: 0.6.1
+      dockerfile-utils: 0.16.1
+      vscode-languageserver-textdocument: 1.0.8
+      vscode-languageserver-types: 3.17.3
+
+  dockerfile-utils@0.16.1:
+    dependencies:
+      dockerfile-ast: 0.6.1
+      vscode-languageserver-textdocument: 1.0.12
+      vscode-languageserver-types: 3.17.5
+
+  vscode-jsonrpc@8.0.2: {}
+
+  vscode-languageserver-protocol@3.17.2:
+    dependencies:
+      vscode-jsonrpc: 8.0.2
+      vscode-languageserver-types: 3.17.2
+
+  vscode-languageserver-textdocument@1.0.12: {}
+
+  vscode-languageserver-textdocument@1.0.8: {}
+
+  vscode-languageserver-types@3.17.2: {}
+
+  vscode-languageserver-types@3.17.3: {}
+
+  vscode-languageserver-types@3.17.5: {}
+
+  vscode-languageserver@8.0.2:
+    dependencies:
+      vscode-languageserver-protocol: 3.17.2

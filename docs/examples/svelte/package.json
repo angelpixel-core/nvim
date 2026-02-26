@@ -1,0 +1,10 @@
+{
+  "name": "lsp-svelte-example",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "pnpm@9.12.0",
+  "devDependencies": {
+    "@tailwindcss/language-server": "^0.14.2",
+    "svelte-language-server": "^0.17.17"
+  }
+}

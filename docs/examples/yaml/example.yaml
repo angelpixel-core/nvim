@@ -1,0 +1,11 @@
+app:
+  name: lsp-yaml-example
+  port: 8080
+  features:
+    - diagnostics
+    - hover
+    - completion
+
+logging:
+  level: info
+  format: json
