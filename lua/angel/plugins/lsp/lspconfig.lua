@@ -13,6 +13,21 @@ return {
   config = function()
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
     local asdf = require("angel.utils.asdf")
+    local util = require("lspconfig.util")
+
+    local function resolve_ruby_lsp_cmd()
+      local asdf_shim = vim.fn.expand("~/.asdf/shims/ruby-lsp")
+
+      if vim.fn.executable(asdf_shim) == 1 then
+        return { asdf_shim }
+      end
+
+      if vim.fn.executable("ruby-lsp") == 1 then
+        return { "ruby-lsp" }
+      end
+
+      return nil
+    end
 
     -- =========================================================================
     -- 🧠 Función on_attach: define keymaps comunes
@@ -21,15 +36,40 @@ return {
       local keymap = vim.keymap
       local opts = { buffer = bufnr, silent = true }
 
-      keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", vim.tbl_extend("force", opts, { desc = "Go to definition" }))
+      keymap.set(
+        "n",
+        "gd",
+        "<cmd>Telescope lsp_definitions<CR>",
+        vim.tbl_extend("force", opts, { desc = "Go to definition" })
+      )
       keymap.set("n", "gD", vim.lsp.buf.declaration, vim.tbl_extend("force", opts, { desc = "Go to declaration" }))
-      keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", vim.tbl_extend("force", opts, { desc = "Go to implementation" }))
-      keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", vim.tbl_extend("force", opts, { desc = "Go to references" }))
+      keymap.set(
+        "n",
+        "gi",
+        "<cmd>Telescope lsp_implementations<CR>",
+        vim.tbl_extend("force", opts, { desc = "Go to implementation" })
+      )
+      keymap.set(
+        "n",
+        "gr",
+        "<cmd>Telescope lsp_references<CR>",
+        vim.tbl_extend("force", opts, { desc = "Go to references" })
+      )
       keymap.set("n", "K", vim.lsp.buf.hover, vim.tbl_extend("force", opts, { desc = "Hover documentation" }))
       keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, vim.tbl_extend("force", opts, { desc = "Code actions" }))
       keymap.set("n", "<leader>rn", vim.lsp.buf.rename, vim.tbl_extend("force", opts, { desc = "Rename symbol" }))
-      keymap.set("n", "<leader>ds", "<cmd>Telescope lsp_document_symbols<CR>", vim.tbl_extend("force", opts, { desc = "Document symbols" }))
-      keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", vim.tbl_extend("force", opts, { desc = "Buffer diagnostics" }))
+      keymap.set(
+        "n",
+        "<leader>ds",
+        "<cmd>Telescope lsp_document_symbols<CR>",
+        vim.tbl_extend("force", opts, { desc = "Document symbols" })
+      )
+      keymap.set(
+        "n",
+        "<leader>D",
+        "<cmd>Telescope diagnostics bufnr=0<CR>",
+        vim.tbl_extend("force", opts, { desc = "Buffer diagnostics" })
+      )
       keymap.set("n", "[d", vim.diagnostic.goto_prev, vim.tbl_extend("force", opts, { desc = "Previous diagnostic" }))
       keymap.set("n", "]d", vim.diagnostic.goto_next, vim.tbl_extend("force", opts, { desc = "Next diagnostic" }))
       keymap.set("n", "<leader>rs", "<cmd>LspRestart<CR>", vim.tbl_extend("force", opts, { desc = "Restart LSP" }))
@@ -39,12 +79,16 @@ return {
     -- 💎 Ruby (fallback automático)
     -- =========================================================================
     local ruby_server
-    if vim.fn.executable("ruby-lsp") == 1 and not vim.loop.fs_stat(".solargraph.yml") then
+    local ruby_lsp_cmd = resolve_ruby_lsp_cmd()
+
+    if ruby_lsp_cmd and not vim.loop.fs_stat(".solargraph.yml") then
       ruby_server = {
         name = "ruby_lsp",
         config = {
+          cmd = ruby_lsp_cmd,
+          root_dir = util.root_pattern("Gemfile", ".git"),
           init_options = {
-            formatter = "rubocop",
+            formatter = "auto",
             linters = { "rubocop" },
           },
           on_attach = function(client, bufnr)
@@ -131,7 +175,25 @@ return {
       graphql = {
         filetypes = { "graphql", "gql", "typescriptreact", "javascriptreact", "svelte" },
       },
-      marksman = {},
+      marksman = {
+        cmd = { "marksman", "server" },
+        filetypes = { "markdown" },
+        root_dir = function(bufnr_or_path)
+          local path
+          if type(bufnr_or_path) == "number" then
+            path = vim.api.nvim_buf_get_name(bufnr_or_path)
+          else
+            path = bufnr_or_path
+          end
+
+          local root = util.root_pattern(".marksman.toml", ".git")(path)
+          if root then
+            return root
+          end
+
+          return vim.fs.dirname(path)
+        end,
+      },
       bashls = {},
       dockerls = {},
       jsonls = {

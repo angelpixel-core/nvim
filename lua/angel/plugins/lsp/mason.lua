@@ -32,7 +32,6 @@ return {
       ensure_installed = {
         -- Lenguajes principales
         "lua_ls",
-        "ruby_lsp",
         "pyright",
         "rust_analyzer",
 
