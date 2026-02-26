@@ -27,3 +27,14 @@ Thumbs.db
 
 .env
 *.env
+
+# LSP example environments (generated dependencies/reports)
+docs/examples/**/node_modules/
+docs/examples/bootstrap-report.txt
+
+# Local agent/tool metadata
+.claude/
+.codex/
+.cursor/
+.opencode/
+openspec/
