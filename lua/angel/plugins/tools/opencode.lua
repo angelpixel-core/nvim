@@ -5,6 +5,8 @@ return {
     { "<C-a>", mode = { "n", "x" }, desc = "Ask opencode" },
     { "<C-x>", mode = { "n", "x" }, desc = "Execute opencode action" },
     { "ga", desc = "Add to opencode" },
+    { "<leader>oo", mode = "n", desc = "Toggle opencode" },
+    { "<C-g>", mode = { "n", "t" }, desc = "Focus previous window" },
     { "<C-.>", mode = { "n", "t" }, desc = "Toggle opencode" },
     { "<S-C-u>", mode = "n", desc = "opencode half page up" },
     { "<S-C-d>", mode = "n", desc = "opencode half page down" },
@@ -31,6 +33,11 @@ return {
     vim.keymap.set({ "n", "x" }, "ga", function()
       require("opencode").prompt("@this")
     end, { desc = "Add to opencode" })
+    vim.keymap.set("n", "<leader>oo", function()
+      require("opencode").toggle()
+    end, { desc = "Toggle opencode" })
+    vim.keymap.set("n", "<C-g>", "<C-w>p", { desc = "Focus previous window" })
+    vim.keymap.set("t", "<C-g>", "<C-\\><C-n><C-w>p", { desc = "Focus previous window" })
     vim.keymap.set({ "n", "t" }, "<C-.>", function()
       require("opencode").toggle()
     end, { desc = "Toggle opencode" })

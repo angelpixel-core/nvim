@@ -13,6 +13,8 @@ Opencode provides AI assistant (LLM) built into Neovim. Ask questions about code
 | `<C-a>` | `opencode.ask("@this: ")` | Ask opencode AI question about current code |
 | `<C-x>` | `opencode.select()` | Execute selected opencode action |
 | `ga` | `opencode.prompt("@this")` | Add to opencode |
+| `<leader>oo` | `opencode.toggle()` | Toggle opencode panel |
+| `<C-g>` | `<C-w>p` / `<C-\\><C-n><C-w>p` | Leave opencode buffer, keep panel active |
 | `<C-.>` | `opencode.toggle()` | Toggle opencode on/off |
 | `<S-C-u>` | `opencode.command("session.half.page.up")` | Half page up |
 | `<S-C-d>` | `opencode.command("session.half.page.down")` | Half page down |
@@ -47,6 +49,8 @@ Example:
 
 ### Toggle on/off
 ```
+<leader>oo  # Toggle opencode panel
+<C-g>       # Leave opencode buffer and jump to previous window
 <C-.>  # Toggle opencode activation
 
 Useful if opencode is annoying or you want to test without AI

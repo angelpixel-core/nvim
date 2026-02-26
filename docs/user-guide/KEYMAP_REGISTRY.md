@@ -176,6 +176,8 @@ This document serves as the single source of truth for keymap assignments to pre
 |---------|---------------------|-----------------------|------|
 | `<C-a>` | Ask opencode        | Open opencode prompt  | opencode.lua |
 | `<C-x>` | Execute opencode…   | Open action picker    | opencode.lua |
+| `<leader>oo` | Toggle opencode | Open/close panel      | opencode.lua |
+| `<C-g>` | Focus previous win  | Leave opencode buffer | opencode.lua |
 | `<C-.>` | Toggle opencode     | Start/stop session    | opencode.lua |
 | `ga`    | Add to opencode     | Add selection/context | opencode.lua |
 
