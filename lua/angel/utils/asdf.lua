@@ -4,17 +4,34 @@
 
 local M = {}
 
+local uv = vim.uv or vim.loop
+
 -- Buscar directorio de proyecto hacia arriba buscando .tool-versions
 local function find_project_root()
-  local cwd = vim.loop.cwd()
-  local current = cwd
+  if not uv or type(uv.cwd) ~= "function" then
+    return nil
+  end
 
-  while current and current ~= "/" and current ~= vim.fn.expand("~") do
+  local cwd = uv.cwd()
+  if not cwd or cwd == "" then
+    return nil
+  end
+
+  local current = cwd
+  local home = vim.fn.expand("~")
+
+  while current and current ~= "/" and current ~= home do
     local tool_versions = current .. "/.tool-versions"
     if vim.fn.filereadable(tool_versions) == 1 then
       return current
     end
-    current = vim.fn.fnamemodify(current, ":h")
+
+    local parent = vim.fn.fnamemodify(current, ":h")
+    if not parent or parent == "" or parent == current then
+      break
+    end
+
+    current = parent
   end
 
   return nil
@@ -54,7 +71,7 @@ end
 function M.resolve_solidity_lsp()
   -- Primero intentar shims de ASDF (más fácil)
   local lsp_shim = vim.fn.expand("~/.asdf/shims/nomicfoundation-solidity-language-server")
-  if vim.fn.executable(lsp_shim) == 1 then
+  if lsp_shim and lsp_shim ~= "" and vim.fn.executable(lsp_shim) == 1 then
     return lsp_shim
   end
 
@@ -71,9 +88,10 @@ end
 function M.resolve_forge()
   -- Intentar resolver vía ASDF foundry
   -- Verificar si hay una versión de foundry instalada en .tool-versions
-  if vim.fn.filereadable(find_project_root() .. "/.tool-versions") == 1 then
+  local project_root = find_project_root()
+  if project_root and vim.fn.filereadable(project_root .. "/.tool-versions") == 1 then
     -- Leer .tool-versions y buscar foundry
-    local f = io.open(find_project_root() .. "/.tool-versions", "r")
+    local f = io.open(project_root .. "/.tool-versions", "r")
     if f then
       local content = f:read("*a")
       f:close()
@@ -139,7 +157,13 @@ function M.detect_project_type()
     if vim.fn.filereadable(current .. "/package.json") == 1 then
       return "hardhat"
     end
-    current = vim.fn.fnamemodify(current, ":h")
+
+    local parent = vim.fn.fnamemodify(current, ":h")
+    if not parent or parent == "" or parent == current then
+      break
+    end
+
+    current = parent
   end
 
   return nil
