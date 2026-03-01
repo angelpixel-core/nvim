@@ -14,6 +14,32 @@ return {
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
     local asdf = require("angel.utils.asdf")
     local util = require("lspconfig.util")
+    local path_sep = package.config:sub(1, 1)
+
+    local function append_path_once(path)
+      if not path or path == "" or vim.fn.isdirectory(path) ~= 1 then
+        return
+      end
+
+      local current_path = vim.env.PATH or ""
+      if current_path:find(path, 1, true) then
+        return
+      end
+
+      local list_sep = path_sep == "\\" and ";" or ":"
+      vim.env.PATH = path .. list_sep .. current_path
+    end
+
+    local function resolve_mason_or_path(binary)
+      local mason_bin = vim.fn.stdpath("data") .. "/mason/bin/" .. binary
+      if vim.fn.executable(mason_bin) == 1 then
+        return mason_bin
+      end
+
+      return binary
+    end
+
+    append_path_once(vim.fn.stdpath("data") .. "/mason/bin")
 
     local function resolve_ruby_lsp_cmd()
       local asdf_shim = vim.fn.expand("~/.asdf/shims/ruby-lsp")
@@ -176,7 +202,7 @@ return {
         filetypes = { "graphql", "gql", "typescriptreact", "javascriptreact", "svelte" },
       },
       marksman = {
-        cmd = { "marksman", "server" },
+        cmd = { resolve_mason_or_path("marksman"), "server" },
         filetypes = { "markdown" },
         root_dir = function(bufnr_or_path)
           local path
@@ -205,6 +231,7 @@ return {
         },
       },
       yamlls = {
+        cmd = { resolve_mason_or_path("yaml-language-server"), "--stdio" },
         settings = {
           yaml = {
             schemaStore = {
