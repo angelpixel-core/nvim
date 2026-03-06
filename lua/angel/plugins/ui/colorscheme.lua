@@ -6,6 +6,13 @@ return {
     local transparent = true
     local theme = require("NeoSolarized")
 
+    local function apply_cursorline_highlight()
+      vim.api.nvim_set_hl(0, "CursorLine", { bg = "#8F8032", fg = "#0B2239" })
+      vim.api.nvim_set_hl(0, "CursorLineNr", { bg = "#8F8032", fg = "#0B2239", bold = true })
+      vim.api.nvim_set_hl(0, "CursorLineSign", { bg = "#8F8032", fg = "#0B2239" })
+      vim.api.nvim_set_hl(0, "CursorLineFold", { bg = "#8F8032", fg = "#0B2239" })
+    end
+
     theme.setup({
       transparent = transparent,
       styles = {
@@ -32,5 +39,12 @@ return {
     })
 
     vim.cmd("colorscheme NeoSolarized")
+    apply_cursorline_highlight()
+
+    vim.api.nvim_create_autocmd("ColorScheme", {
+      callback = function()
+        apply_cursorline_highlight()
+      end,
+    })
   end,
 }
